@@ -1,5 +1,6 @@
 package dreamjob.controller;
 
+import dreamjob.model.Candidate;
 import dreamjob.store.CandidateStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,5 +20,10 @@ public class CandidateController {
         return "candidates";
     }
 
-
+    @GetMapping("/formAddCandidate")
+    public String addCandidate(Model model) {
+        model.addAttribute("candidate",
+                new Candidate(0, "Имя", "Описание", null));
+        return "addCandidate";
+    }
 }
