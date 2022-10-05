@@ -1,5 +1,6 @@
 package dreamjob.controller;
 
+import dreamjob.model.Post;
 import dreamjob.store.PostStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,5 +20,12 @@ public class PostControl {
     public String posts(Model model) {
         model.addAttribute("posts", store.findAll());
         return "posts";
+    }
+
+    @GetMapping("/formAddPost")
+    public String addPost(Model model) {
+        model.addAttribute("post",
+                new Post(0, "Название вакансии", "Описание", null));
+        return "addPost";
     }
 }
