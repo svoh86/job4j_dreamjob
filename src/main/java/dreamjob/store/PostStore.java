@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Хранилище PostStore. Оно будет сингелтон.
@@ -17,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PostStore {
     private static final PostStore INST = new PostStore();
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
+    private static final AtomicInteger ID = new AtomicInteger(3);
 
     private PostStore() {
         posts.put(1, new Post(1,
@@ -39,5 +41,11 @@ public class PostStore {
 
     public Collection<Post> findAll() {
         return posts.values();
+    }
+
+    public void add(Post post) {
+        post.setId(ID.incrementAndGet());
+        post.setCreated(LocalDateTime.now());
+        posts.put(post.getId(), post);
     }
 }
