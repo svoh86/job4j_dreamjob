@@ -1,4 +1,4 @@
-package dreamjob.store;
+package dreamjob.persistence;
 
 import dreamjob.model.Post;
 
@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * Слой persistence.
  * Хранилище PostStore. Оно будет сингелтон.
  * Когда приложение запустится, то в хранилище будут три объекта Post.
  *

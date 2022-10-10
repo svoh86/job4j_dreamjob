@@ -1,7 +1,6 @@
-package dreamjob.store;
+package dreamjob.persistence;
 
 import dreamjob.model.Candidate;
-import dreamjob.model.Post;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -10,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * Слой persistence.
  * Аналогично PostStore
  *
  * @author Svistunov Mikhail
