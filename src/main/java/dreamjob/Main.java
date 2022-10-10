@@ -1,5 +1,6 @@
 package dreamjob;
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Svistunov Mikhail
  * @version 1.0
  */
+@ThreadSafe
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {

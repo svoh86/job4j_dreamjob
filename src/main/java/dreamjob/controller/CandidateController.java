@@ -2,6 +2,7 @@ package dreamjob.controller;
 
 import dreamjob.model.Candidate;
 import dreamjob.service.CandidateService;
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  * @author Svistunov Mikhail
  * @version 1.0
  */
+@ThreadSafe
 @Controller
 public class CandidateController {
     private final CandidateService service;

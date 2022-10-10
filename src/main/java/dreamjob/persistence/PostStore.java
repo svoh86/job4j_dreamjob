@@ -1,6 +1,7 @@
 package dreamjob.persistence;
 
 import dreamjob.model.Post;
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Svistunov Mikhail
  * @version 1.0
  */
+@ThreadSafe
 @Repository
 public class PostStore {
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();

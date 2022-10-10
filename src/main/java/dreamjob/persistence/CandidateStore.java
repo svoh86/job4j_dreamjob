@@ -1,6 +1,7 @@
 package dreamjob.persistence;
 
 import dreamjob.model.Candidate;
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Svistunov Mikhail
  * @version 1.0
  */
+@ThreadSafe
 @Repository
 public class CandidateStore {
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();

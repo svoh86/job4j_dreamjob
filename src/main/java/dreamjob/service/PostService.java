@@ -2,6 +2,7 @@ package dreamjob.service;
 
 import dreamjob.model.Post;
 import dreamjob.persistence.PostStore;
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.Collection;
  * @author Svistunov Mikhail
  * @version 1.0
  */
+@ThreadSafe
 @Service
 public class PostService {
     private final PostStore store;
