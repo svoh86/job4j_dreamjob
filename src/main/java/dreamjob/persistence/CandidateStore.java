@@ -1,6 +1,7 @@
 package dreamjob.persistence;
 
 import dreamjob.model.Candidate;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -15,8 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Svistunov Mikhail
  * @version 1.0
  */
+@Repository
 public class CandidateStore {
-    private static final CandidateStore INST = new CandidateStore();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
     private static final AtomicInteger ID = new AtomicInteger(3);
 
@@ -33,10 +34,6 @@ public class CandidateStore {
                 "Senior Java Dev",
                 "Experience over 3 years",
                 LocalDateTime.now()));
-    }
-
-    public static CandidateStore instOf() {
-        return INST;
     }
 
     public Collection<Candidate> findAll() {

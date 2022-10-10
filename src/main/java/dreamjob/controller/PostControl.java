@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
  */
 @Controller
 public class PostControl {
-    private final PostService service = PostService.instOf();
+    private final PostService service;
+
+    public PostControl(PostService service) {
+        this.service = service;
+    }
 
     @GetMapping("/posts")
     public String posts(Model model) {

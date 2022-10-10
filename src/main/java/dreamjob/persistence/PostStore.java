@@ -1,6 +1,7 @@
 package dreamjob.persistence;
 
 import dreamjob.model.Post;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -10,14 +11,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Слой persistence.
- * Хранилище PostStore. Оно будет сингелтон.
+ * Хранилище PostStore.
  * Когда приложение запустится, то в хранилище будут три объекта Post.
  *
  * @author Svistunov Mikhail
  * @version 1.0
  */
+@Repository
 public class PostStore {
-    private static final PostStore INST = new PostStore();
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private static final AtomicInteger ID = new AtomicInteger(3);
 
@@ -34,10 +35,6 @@ public class PostStore {
                 "Senior Java Job",
                 "Experience over 3 years",
                 LocalDateTime.now()));
-    }
-
-    public static PostStore instOf() {
-        return INST;
     }
 
     public Collection<Post> findAll() {
