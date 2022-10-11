@@ -23,7 +23,7 @@ public class CandidateStore {
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
     private static final AtomicInteger ID = new AtomicInteger(3);
 
-    private CandidateStore() {
+    public CandidateStore() {
         candidates.put(1, new Candidate(1,
                 "Junior Java Dev",
                 "Experience near 1 year",
