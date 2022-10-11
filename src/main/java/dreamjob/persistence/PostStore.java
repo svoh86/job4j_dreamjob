@@ -28,15 +28,15 @@ public class PostStore {
         posts.put(1, new Post(1,
                 "Junior Java Job",
                 "Less than 1 year experience",
-                LocalDateTime.now()));
+                LocalDateTime.now(), false));
         posts.put(2, new Post(2,
                 "Middle Java Job",
                 "Experience from 1 to 3 years",
-                LocalDateTime.now()));
+                LocalDateTime.now(), false));
         posts.put(3, new Post(3,
                 "Senior Java Job",
                 "Experience over 3 years",
-                LocalDateTime.now()));
+                LocalDateTime.now(), true));
     }
 
     public Collection<Post> findAll() {

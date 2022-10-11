@@ -34,7 +34,7 @@ public class PostControl {
     @GetMapping("/formAddPost")
     public String addPost(Model model) {
         model.addAttribute("post",
-                new Post(0, "Название вакансии", "Описание", null));
+                new Post(0, "Название вакансии", "Описание", null, false));
         return "addPost";
     }
 
