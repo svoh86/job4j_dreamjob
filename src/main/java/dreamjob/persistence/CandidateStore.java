@@ -27,15 +27,15 @@ public class CandidateStore {
         candidates.put(1, new Candidate(1,
                 "Junior Java Dev",
                 "Experience near 1 year",
-                LocalDateTime.now()));
+                LocalDateTime.now(), new byte[0]));
         candidates.put(2, new Candidate(2,
                 "Middle Java Dev",
                 "Experience 3 years",
-                LocalDateTime.now()));
+                LocalDateTime.now(), new byte[0]));
         candidates.put(3, new Candidate(3,
                 "Senior Java Dev",
                 "Experience over 3 years",
-                LocalDateTime.now()));
+                LocalDateTime.now(), new byte[0]));
     }
 
     public Collection<Candidate> findAll() {

@@ -14,15 +14,17 @@ public class Candidate {
     private String name;
     private String description;
     private LocalDateTime created;
+    private byte[] photo;
 
     public Candidate() {
     }
 
-    public Candidate(int id, String name, String description, LocalDateTime created) {
+    public Candidate(int id, String name, String description, LocalDateTime created, byte[] photo) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
+        this.photo = photo;
     }
 
     public int getId() {
@@ -55,6 +57,14 @@ public class Candidate {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 
     @Override
