@@ -1,5 +1,6 @@
 package dreamjob.persistence;
 
+import dreamjob.model.City;
 import dreamjob.model.Post;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
@@ -28,15 +29,15 @@ public class PostStore {
         posts.put(1, new Post(1,
                 "Junior Java Job",
                 "Less than 1 year experience",
-                LocalDateTime.now(), false));
+                LocalDateTime.now(), false, new City(0, "Самара")));
         posts.put(2, new Post(2,
                 "Middle Java Job",
                 "Experience from 1 to 3 years",
-                LocalDateTime.now(), false));
+                LocalDateTime.now(), false, new City(0, "Самара")));
         posts.put(3, new Post(3,
                 "Senior Java Job",
                 "Experience over 3 years",
-                LocalDateTime.now(), true));
+                LocalDateTime.now(), true, new City(0, "Самара")));
     }
 
     public Collection<Post> findAll() {
