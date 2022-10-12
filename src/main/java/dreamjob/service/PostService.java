@@ -1,11 +1,12 @@
 package dreamjob.service;
 
 import dreamjob.model.Post;
-import dreamjob.persistence.PostStore;
+import dreamjob.persistence.CityStore;
+import dreamjob.persistence.PostDbStore;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Слой service
@@ -16,25 +17,31 @@ import java.util.Collection;
 @ThreadSafe
 @Service
 public class PostService {
-    private final PostStore store;
+    private final PostDbStore postDbStore;
+    private final CityStore cityStore;
 
-    public PostService(PostStore store) {
-        this.store = store;
+    public PostService(PostDbStore postDbStore, CityStore cityStore) {
+        this.postDbStore = postDbStore;
+        this.cityStore = cityStore;
     }
 
-    public Collection<Post> findAll() {
-        return store.findAll();
+    public List<Post> findAll() {
+        List<Post> posts = postDbStore.findAll();
+        posts.forEach(
+                p -> p.setCity(
+                cityStore.findById(p.getCity().getId())));
+        return posts;
     }
 
     public void add(Post post) {
-        store.add(post);
+        postDbStore.add(post);
     }
 
     public Post findById(int id) {
-        return store.findById(id);
+        return postDbStore.findById(id);
     }
 
     public void update(Post post) {
-        store.update(post);
+        postDbStore.update(post);
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDateTime;
+
 /**
  * Контроллер.
  *
@@ -45,6 +47,7 @@ public class PostControl {
     @PostMapping("/createPost")
     public String createPost(@ModelAttribute Post post) {
         post.setCity(cityService.findById(post.getCity().getId()));
+        post.setCreated(LocalDateTime.now());
         postService.add(post);
         return "redirect:/posts";
     }
@@ -59,6 +62,7 @@ public class PostControl {
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post) {
         post.setCity(cityService.findById(post.getCity().getId()));
+        post.setCreated(LocalDateTime.now());
         postService.update(post);
         return "redirect:/posts";
     }
