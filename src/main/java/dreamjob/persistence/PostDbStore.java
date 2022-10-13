@@ -3,6 +3,8 @@ package dreamjob.persistence;
 import dreamjob.model.City;
 import dreamjob.model.Post;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -16,6 +18,13 @@ import java.util.List;
 @Repository
 public class PostDbStore {
     private final BasicDataSource pool;
+    private static final Logger LOG = LoggerFactory.getLogger(PostDbStore.class.getName());
+    private final static String FIND_ALL = "SELECT * FROM post";
+    private final static String ADD = "INSERT INTO post(name, description, created, visible, city_id)"
+                                      + " VALUES (?, ?, ?, ?, ?)";
+    private final static String UPDATE = "UPDATE post SET name = ?, description = ?, created = ?,"
+                                         + " visible = ?, city_id = ? WHERE id = ?";
+    private final static String FIND_BY_ID = "SELECT * FROM post WHERE id = ?";
 
     public PostDbStore(BasicDataSource pool) {
         this.pool = pool;
@@ -24,22 +33,15 @@ public class PostDbStore {
     public List<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (Connection connection = pool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("Select * from post")
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL)
         ) {
             try (ResultSet it = statement.executeQuery()) {
                 while (it.next()) {
-                    posts.add(new Post(
-                            it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getTimestamp("created").toLocalDateTime(),
-                            it.getBoolean("visible"),
-                            new City(it.getInt("city_id"), "Город")
-                    ));
+                    posts.add(getPost(it));
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in method findAll()", e);
         }
         return posts;
     }
@@ -47,8 +49,7 @@ public class PostDbStore {
     public Post add(Post post) {
         try (Connection connection = pool.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                     "insert into post(name, description, created, visible, city_id) values (?, ?, ?, ?, ?)",
-                     PreparedStatement.RETURN_GENERATED_KEYS)
+                     ADD, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, post.getName());
             statement.setString(2, post.getDescription());
@@ -62,15 +63,14 @@ public class PostDbStore {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in method add()", e);
         }
         return post;
     }
 
     public void update(Post post) {
         try (Connection connection = pool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(
-                     "update post set name = ?, description = ?, created = ?, visible = ?, city_id = ? where id = ?")
+             PreparedStatement statement = connection.prepareStatement(UPDATE)
         ) {
             statement.setString(1, post.getName());
             statement.setString(2, post.getDescription());
@@ -80,30 +80,34 @@ public class PostDbStore {
             statement.setInt(6, post.getId());
             statement.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in method update()", e);
         }
     }
 
     public Post findById(int id) {
         try (Connection connection = pool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("Select * from post where id = ?")
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)
         ) {
             statement.setInt(1, id);
             try (ResultSet it = statement.executeQuery()) {
                 if (it.next()) {
-                    return new Post(
-                            it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getTimestamp("created").toLocalDateTime(),
-                            it.getBoolean("visible"),
-                            new City(it.getInt("city_id"), null)
-                    );
+                    return getPost(it);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in method findById()", e);
         }
         return null;
+    }
+
+    private Post getPost(ResultSet it) throws SQLException {
+        return new Post(
+                it.getInt("id"),
+                it.getString("name"),
+                it.getString("description"),
+                it.getTimestamp("created").toLocalDateTime(),
+                it.getBoolean("visible"),
+                new City(it.getInt("city_id"), "Город")
+        );
     }
 }
