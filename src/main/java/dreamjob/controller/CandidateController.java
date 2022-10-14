@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
  * @author Svistunov Mikhail
@@ -44,6 +45,7 @@ public class CandidateController {
     @PostMapping("/createCandidate")
     public String createCandidate(@ModelAttribute Candidate candidate,
                                   @RequestParam("file") MultipartFile file) throws IOException {
+        candidate.setCreated(LocalDateTime.now());
         candidate.setPhoto(file.getBytes());
         candidateService.add(candidate);
         return "redirect:/candidates";
@@ -58,6 +60,7 @@ public class CandidateController {
     @PostMapping("/updateCandidate")
     public String updateCandidate(@ModelAttribute Candidate candidate,
                                   @RequestParam("file") MultipartFile file) throws IOException {
+        candidate.setCreated(LocalDateTime.now());
         candidate.setPhoto(file.getBytes());
         candidateService.update(candidate);
         return "redirect:/candidates";

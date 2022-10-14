@@ -1,7 +1,7 @@
 package dreamjob.service;
 
 import dreamjob.model.Candidate;
-import dreamjob.persistence.CandidateStore;
+import dreamjob.persistence.CandidateDbStore;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +16,9 @@ import java.util.Collection;
 @ThreadSafe
 @Service
 public class CandidateService {
-    private final CandidateStore store;
+    private final CandidateDbStore store;
 
-    public CandidateService(CandidateStore store) {
+    public CandidateService(CandidateDbStore store) {
         this.store = store;
     }
 
