@@ -3,8 +3,8 @@ package dreamjob.persistence;
 import dreamjob.model.City;
 import dreamjob.model.Post;
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 public class PostDbStore {
     private final BasicDataSource pool;
-    private static final Logger LOG = LoggerFactory.getLogger(PostDbStore.class.getName());
+    private static final Logger LOG = LogManager.getLogger(PostDbStore.class);
     private final static String FIND_ALL = "SELECT * FROM post";
     private final static String ADD = "INSERT INTO post(name, description, created, visible, city_id)"
                                       + " VALUES (?, ?, ?, ?, ?)";

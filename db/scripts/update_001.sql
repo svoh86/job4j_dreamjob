@@ -3,5 +3,6 @@ CREATE TABLE post (
     name text,
     description text,
     created timestamp,
-    visible boolean
+    visible boolean,
+    city_id integer
 );
