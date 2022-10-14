@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -29,6 +31,7 @@ public class CandidateDbStore {
     private final static String FIND_BY_ID = "SELECT * FROM candidate WHERE id = ?";
     private final static String UPDATE = "UPDATE candidate SET name = ?, description = ?, "
                                          + "created = ?, photo = ? WHERE id = ?";
+    private static final Comparator<Candidate> COMPARE_BY_ID = Comparator.comparingInt(Candidate::getId);
 
     public CandidateDbStore(BasicDataSource pool) {
         this.pool = pool;
@@ -47,6 +50,7 @@ public class CandidateDbStore {
         } catch (Exception e) {
             LOG.error("Exception in method findAll()", e);
         }
+        candidates.sort(COMPARE_BY_ID);
         return candidates;
     }
 
