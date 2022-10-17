@@ -20,6 +20,7 @@ public class UserDbStore {
     private final BasicDataSource pool;
     private static final Logger LOG = LogManager.getLogger(UserDbStore.class);
     private final static String ADD = "INSERT INTO users(email, password) VALUES (?, ?)";
+    private final static String FIND_USER_BY_EMAIL_AND_PWD = "SELECT * FROM users WHERE email = ? AND password = ?";
 
     public UserDbStore(BasicDataSource pool) {
         this.pool = pool;
@@ -42,6 +43,27 @@ public class UserDbStore {
             }
         } catch (Exception e) {
             LOG.error("Exception in method add()", e);
+        }
+        return rsl;
+    }
+
+    public Optional<User> findUserByEmailAndPwd(String email, String password) {
+        Optional<User> rsl = Optional.empty();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_EMAIL_AND_PWD)) {
+            statement.setString(1, email);
+            statement.setString(2, password);
+            try (ResultSet it = statement.executeQuery()) {
+                if (it.next()) {
+                    rsl = Optional.of(new User(
+                            it.getInt("id"),
+                            it.getString("email"),
+                            it.getString("password")
+                    ));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception in method findUserByEmailAndPwd()", e);
         }
         return rsl;
     }
