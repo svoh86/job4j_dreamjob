@@ -1,4 +1,4 @@
-CREATE TABLE post (
+CREATE TABLE IF NOT EXISTS post (
     id serial primary key,
     name text,
     description text,
@@ -7,7 +7,7 @@ CREATE TABLE post (
     city_id integer
 );
 
-CREATE TABLE candidate (
+CREATE TABLE IF NOT EXISTS candidate (
     id serial primary key,
     name text,
     description text,
