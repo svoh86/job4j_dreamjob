@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 /**
@@ -65,11 +67,19 @@ public class UserControl {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute User user) {
+    public String login(@ModelAttribute User user, HttpServletRequest req) {
         Optional<User> userDb = userService.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
         if (userDb.isEmpty()) {
             return "redirect:/loginPage?fail=true";
         }
+        HttpSession session = req.getSession();
+        session.setAttribute("user", userDb.get());
         return "redirect:/index";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/loginPage";
     }
 }

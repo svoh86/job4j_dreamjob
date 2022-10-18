@@ -1,6 +1,7 @@
 package dreamjob.controller;
 
 import dreamjob.model.Candidate;
+import dreamjob.model.User;
 import dreamjob.service.CandidateService;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.core.io.ByteArrayResource;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -30,13 +32,25 @@ public class CandidateController {
     }
 
     @GetMapping("/candidates")
-    public String candidates(Model model) {
+    public String candidates(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user ==null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("candidates", candidateService.findAll());
         return "candidates";
     }
 
     @GetMapping("/formAddCandidate")
-    public String addCandidate(Model model) {
+    public String addCandidate(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user ==null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("candidate",
                 new Candidate(0, "Имя", "Описание", null, new byte[0]));
         return "addCandidate";
@@ -52,7 +66,13 @@ public class CandidateController {
     }
 
     @GetMapping("/formUpdateCandidate/{candidateID}")
-    public String formUpdateCandidate(Model model, @PathVariable("candidateID") int id) {
+    public String formUpdateCandidate(Model model, @PathVariable("candidateID") int id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user ==null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("candidate", candidateService.findById(id));
         return "updateCandidate";
     }

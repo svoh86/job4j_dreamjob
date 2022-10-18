@@ -1,6 +1,7 @@
 package dreamjob.controller;
 
 import dreamjob.model.Post;
+import dreamjob.model.User;
 import dreamjob.service.CityService;
 import dreamjob.service.PostService;
 import net.jcip.annotations.ThreadSafe;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 /**
@@ -31,13 +33,25 @@ public class PostControl {
     }
 
     @GetMapping("/posts")
-    public String posts(Model model) {
+    public String posts(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("posts", postService.findAll());
         return "posts";
     }
 
     @GetMapping("/formAddPost")
-    public String addPost(Model model) {
+    public String addPost(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("post",
                 new Post(0, "Название вакансии", "Описание", null, false, null));
         model.addAttribute("cities", cityService.getAllCities());
@@ -53,7 +67,13 @@ public class PostControl {
     }
 
     @GetMapping("/formUpdatePost/{postID}")
-    public String formUpdatePost(Model model, @PathVariable("postID") int id) {
+    public String formUpdatePost(Model model, @PathVariable("postID") int id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("post", postService.findById(id));
         model.addAttribute("cities", cityService.getAllCities());
         return "updatePost";
