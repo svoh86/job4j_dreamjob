@@ -6,7 +6,8 @@ import java.util.Objects;
  * Модель описывает пользователя
  *
  * @author Svistunov Mikhail
- * @version 1.0
+ * @version 1.1
+ * Добавлена возможность сравнивать по email.
  */
 public class User {
     private int id;
@@ -55,11 +56,11 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return id == user.id;
+        return id == user.id && Objects.equals(email, user.getEmail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, email);
     }
 }
