@@ -34,7 +34,7 @@ public class CandidateController {
     @GetMapping("/candidates")
     public String candidates(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user ==null) {
+        if (user == null) {
             user = new User();
             user.setName("Гость");
         }
@@ -46,7 +46,7 @@ public class CandidateController {
     @GetMapping("/formAddCandidate")
     public String addCandidate(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user ==null) {
+        if (user == null) {
             user = new User();
             user.setName("Гость");
         }
@@ -68,7 +68,7 @@ public class CandidateController {
     @GetMapping("/formUpdateCandidate/{candidateID}")
     public String formUpdateCandidate(Model model, @PathVariable("candidateID") int id, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user ==null) {
+        if (user == null) {
             user = new User();
             user.setName("Гость");
         }
