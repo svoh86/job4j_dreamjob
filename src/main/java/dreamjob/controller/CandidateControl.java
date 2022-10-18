@@ -1,8 +1,8 @@
 package dreamjob.controller;
 
 import dreamjob.model.Candidate;
-import dreamjob.model.User;
 import dreamjob.service.CandidateService;
+import dreamjob.utility.UserSession;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -24,33 +24,23 @@ import java.time.LocalDateTime;
  */
 @ThreadSafe
 @Controller
-public class CandidateController {
+public class CandidateControl {
     private final CandidateService candidateService;
 
-    public CandidateController(CandidateService candidateService) {
+    public CandidateControl(CandidateService candidateService) {
         this.candidateService = candidateService;
     }
 
     @GetMapping("/candidates")
     public String candidates(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        UserSession.getUserSession(model, session);
         model.addAttribute("candidates", candidateService.findAll());
         return "candidates";
     }
 
     @GetMapping("/formAddCandidate")
     public String addCandidate(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        UserSession.getUserSession(model, session);
         model.addAttribute("candidate",
                 new Candidate(0, "Имя", "Описание", null, new byte[0]));
         return "addCandidate";
@@ -67,12 +57,7 @@ public class CandidateController {
 
     @GetMapping("/formUpdateCandidate/{candidateID}")
     public String formUpdateCandidate(Model model, @PathVariable("candidateID") int id, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        UserSession.getUserSession(model, session);
         model.addAttribute("candidate", candidateService.findById(id));
         return "updateCandidate";
     }

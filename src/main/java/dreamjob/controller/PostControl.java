@@ -1,9 +1,9 @@
 package dreamjob.controller;
 
 import dreamjob.model.Post;
-import dreamjob.model.User;
 import dreamjob.service.CityService;
 import dreamjob.service.PostService;
+import dreamjob.utility.UserSession;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,24 +34,14 @@ public class PostControl {
 
     @GetMapping("/posts")
     public String posts(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        UserSession.getUserSession(model, session);
         model.addAttribute("posts", postService.findAll());
         return "posts";
     }
 
     @GetMapping("/formAddPost")
     public String addPost(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        UserSession.getUserSession(model, session);
         model.addAttribute("post",
                 new Post(0, "Название вакансии", "Описание", null, false, null));
         model.addAttribute("cities", cityService.getAllCities());
@@ -68,12 +58,7 @@ public class PostControl {
 
     @GetMapping("/formUpdatePost/{postID}")
     public String formUpdatePost(Model model, @PathVariable("postID") int id, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        UserSession.getUserSession(model, session);
         model.addAttribute("post", postService.findById(id));
         model.addAttribute("cities", cityService.getAllCities());
         return "updatePost";
