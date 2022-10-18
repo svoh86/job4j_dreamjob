@@ -47,7 +47,7 @@ public class UserDbStore {
         return rsl;
     }
 
-    public Optional<User> findUserByEmailAndPwd(String email, String password) {
+    public Optional<User> findUserByEmailAndPassword(String email, String password) {
         Optional<User> rsl = Optional.empty();
         try (Connection connection = pool.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_EMAIL_AND_PWD)) {
