@@ -14,7 +14,8 @@ import java.io.IOException;
  * Если его нет, то мы переходим на страницу авторизации.
  *
  * @author Svistunov Mikhail
- * @version 1.0
+ * @version 1.1
+ * В фильтр добавлен доступ к представлениям для регистрации пользователей.
  */
 @Component
 public class AuthFilter implements Filter {
@@ -26,7 +27,10 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String uri = req.getRequestURI();
-        if (uri.endsWith("loginPage") || uri.endsWith("login")) {
+        if (uri.endsWith("loginPage") || uri.endsWith("login")
+            || uri.endsWith("formAddUser") || uri.endsWith("createUser")
+            || uri.endsWith("failRegistration") || uri.endsWith("successRegistration")
+        ) {
             chain.doFilter(req, res);
             return;
         }
