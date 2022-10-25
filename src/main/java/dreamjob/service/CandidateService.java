@@ -37,4 +37,8 @@ public class CandidateService {
     public void update(Candidate candidate) {
         store.update(candidate);
     }
+
+    public void updateWithoutPhoto(Candidate candidate) {
+        store.updateWithoutPhoto(candidate);
+    }
 }

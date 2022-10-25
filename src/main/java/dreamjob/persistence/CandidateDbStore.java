@@ -31,6 +31,8 @@ public class CandidateDbStore {
     private final static String FIND_BY_ID = "SELECT * FROM candidate WHERE id = ?";
     private final static String UPDATE = "UPDATE candidate SET name = ?, description = ?, "
                                          + "created = ?, photo = ? WHERE id = ?";
+    private final static String UPDATE_WITHOUT_PHOTO = "UPDATE candidate SET name = ?, description = ?, "
+                                         + "created = ? WHERE id = ?";
     private static final Comparator<Candidate> COMPARE_BY_ID = Comparator.comparingInt(Candidate::getId);
 
     public CandidateDbStore(BasicDataSource pool) {
@@ -100,6 +102,20 @@ public class CandidateDbStore {
             statement.setTimestamp(3, Timestamp.valueOf(candidate.getCreated()));
             statement.setBytes(4, candidate.getPhoto());
             statement.setInt(5, candidate.getId());
+            statement.execute();
+        } catch (Exception e) {
+            LOG.error("Exception in method update(Candidate candidate)", e);
+        }
+    }
+
+    public void updateWithoutPhoto(Candidate candidate) {
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_WITHOUT_PHOTO)
+        ) {
+            statement.setString(1, candidate.getName());
+            statement.setString(2, candidate.getDescription());
+            statement.setTimestamp(3, Timestamp.valueOf(candidate.getCreated()));
+            statement.setInt(4, candidate.getId());
             statement.execute();
         } catch (Exception e) {
             LOG.error("Exception in method update(Candidate candidate)", e);

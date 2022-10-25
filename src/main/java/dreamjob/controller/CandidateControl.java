@@ -67,7 +67,11 @@ public class CandidateControl {
                                   @RequestParam("file") MultipartFile file) throws IOException {
         candidate.setCreated(LocalDateTime.now());
         candidate.setPhoto(file.getBytes());
-        candidateService.update(candidate);
+        if (candidate.getPhoto().length != 0) {
+            candidateService.update(candidate);
+        } else {
+            candidateService.updateWithoutPhoto(candidate);
+        }
         return "redirect:/candidates";
     }
 
