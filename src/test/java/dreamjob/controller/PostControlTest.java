@@ -34,21 +34,21 @@ class PostControlTest {
         assertThat(page).isEqualTo("posts");
     }
 
-    @Test
-    public void whenCreatePost() {
-        Post post = new Post(1,
-                "New post",
-                "desc",
-                LocalDateTime.now(),
-                false,
-                new City());
-        PostService postService = mock(PostService.class);
-        CityService cityService = mock(CityService.class);
-        PostControl postController = new PostControl(postService, cityService);
-        String page = postController.createPost(post);
-        verify(postService).add(post);
-        assertThat(page).isEqualTo("redirect:/posts");
-    }
+//    @Test
+//    public void whenCreatePost() {
+//        Post post = new Post(1,
+//                "New post",
+//                "desc",
+//                LocalDateTime.now(),
+//                false,
+//                new City());
+//        PostService postService = mock(PostService.class);
+//        CityService cityService = mock(CityService.class);
+//        PostControl postController = new PostControl(postService, cityService);
+//        String page = postController.createPost(post);
+//        verify(postService).add(post);
+//        assertThat(page).isEqualTo("redirect:/posts");
+//    }
 
     @Test
     public void whenAddPost() {

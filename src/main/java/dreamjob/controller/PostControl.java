@@ -1,6 +1,7 @@
 package dreamjob.controller;
 
 import dreamjob.model.Post;
+import dreamjob.model.User;
 import dreamjob.service.CityService;
 import dreamjob.service.PostService;
 import dreamjob.utility.UserSession;
@@ -46,9 +47,10 @@ public class PostControl {
     }
 
     @PostMapping("/createPost")
-    public String createPost(@ModelAttribute Post post) {
+    public String createPost(@ModelAttribute Post post, HttpSession session) {
         post.setCity(cityService.findById(post.getCity().getId()));
         post.setCreated(LocalDateTime.now());
+        post.setUser((User) session.getAttribute("user"));
         postService.add(post);
         return "redirect:/posts";
     }
@@ -74,5 +76,12 @@ public class PostControl {
         UserSession.getUserSession(model, session);
         postService.delete(id);
         return "redirect:/posts";
+    }
+
+    @GetMapping("/myPosts")
+    public String myPosts(Model model, HttpSession session) {
+        UserSession.getUserSession(model, session);
+        model.addAttribute("posts", postService.findByUserId(((User) session.getAttribute("user")).getId()));
+        return "posts";
     }
 }

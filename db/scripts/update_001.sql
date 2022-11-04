@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS post (
     description text,
     created timestamp,
     visible boolean,
-    city_id integer
+    city_id integer,
+    user_id integer
 );
 
 CREATE TABLE IF NOT EXISTS candidate (

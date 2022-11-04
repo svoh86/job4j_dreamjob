@@ -2,6 +2,7 @@ package dreamjob.persistence;
 
 import dreamjob.model.City;
 import dreamjob.model.Post;
+import dreamjob.model.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -21,12 +22,13 @@ public class PostDbStore {
     private final BasicDataSource pool;
     private static final Logger LOG = LogManager.getLogger(PostDbStore.class);
     private final static String FIND_ALL = "SELECT * FROM post";
-    private final static String ADD = "INSERT INTO post(name, description, created, visible, city_id)"
-                                      + " VALUES (?, ?, ?, ?, ?)";
+    private final static String ADD = "INSERT INTO post(name, description, created, visible, city_id, user_id)"
+                                      + " VALUES (?, ?, ?, ?, ?, ?)";
     private final static String UPDATE = "UPDATE post SET name = ?, description = ?, created = ?,"
                                          + " visible = ?, city_id = ? WHERE id = ?";
     private final static String FIND_BY_ID = "SELECT * FROM post WHERE id = ?";
     private final static String DELETE = "DELETE FROM post WHERE id = ?";
+    private final static String FIND_BY_USER_ID = "SELECT * FROM post WHERE user_id = ?";
     private final static Comparator<Post> COMPARE_BY_ID = Comparator.comparingInt(Post::getId);
 
     public PostDbStore(BasicDataSource pool) {
@@ -60,6 +62,7 @@ public class PostDbStore {
             statement.setTimestamp(3, Timestamp.valueOf(post.getCreated()));
             statement.setBoolean(4, post.isVisible());
             statement.setInt(5, post.getCity().getId());
+            statement.setInt(6, post.getUser().getId());
             statement.execute();
             try (ResultSet id = statement.getGeneratedKeys()) {
                 if (id.next()) {
@@ -113,6 +116,22 @@ public class PostDbStore {
         } catch (Exception e) {
             LOG.error("Exception in method delete()", e);
         }
+    }
+
+    public Post findByUserId(int id) {
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_ID)
+        ) {
+            statement.setInt(1, id);
+            try (ResultSet it = statement.executeQuery()) {
+                if (it.next()) {
+                    return getPost(it);
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception in method findByUserId()", e);
+        }
+        return null;
     }
 
     private Post getPost(ResultSet it) throws SQLException {

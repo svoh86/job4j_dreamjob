@@ -48,4 +48,8 @@ public class PostService {
     public void delete(int id) {
         postDbStore.delete(id);
     }
+
+    public Post findByUserId(int id) {
+        return postDbStore.findByUserId(id);
+    }
 }
