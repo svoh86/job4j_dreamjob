@@ -26,6 +26,7 @@ public class PostDbStore {
     private final static String UPDATE = "UPDATE post SET name = ?, description = ?, created = ?,"
                                          + " visible = ?, city_id = ? WHERE id = ?";
     private final static String FIND_BY_ID = "SELECT * FROM post WHERE id = ?";
+    private final static String DELETE = "DELETE FROM post WHERE id = ?";
     private final static Comparator<Post> COMPARE_BY_ID = Comparator.comparingInt(Post::getId);
 
     public PostDbStore(BasicDataSource pool) {
@@ -101,6 +102,17 @@ public class PostDbStore {
             LOG.error("Exception in method findById()", e);
         }
         return null;
+    }
+
+    public void delete(int id) {
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE)
+        ) {
+            statement.setInt(1, id);
+            statement.execute();
+        } catch (Exception e) {
+            LOG.error("Exception in method delete()", e);
+        }
     }
 
     private Post getPost(ResultSet it) throws SQLException {

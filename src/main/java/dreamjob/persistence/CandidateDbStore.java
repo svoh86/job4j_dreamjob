@@ -33,6 +33,7 @@ public class CandidateDbStore {
                                          + "created = ?, photo = ? WHERE id = ?";
     private final static String UPDATE_WITHOUT_PHOTO = "UPDATE candidate SET name = ?, description = ?, "
                                          + "created = ? WHERE id = ?";
+    private final static String DELETE = "DELETE FROM candidate WHERE id = ?";
     private static final Comparator<Candidate> COMPARE_BY_ID = Comparator.comparingInt(Candidate::getId);
 
     public CandidateDbStore(BasicDataSource pool) {
@@ -119,6 +120,17 @@ public class CandidateDbStore {
             statement.execute();
         } catch (Exception e) {
             LOG.error("Exception in method update(Candidate candidate)", e);
+        }
+    }
+
+    public void delete(int id) {
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE)
+        ) {
+            statement.setInt(1, id);
+            statement.execute();
+        } catch (Exception e) {
+            LOG.error("Exception in method delete()", e);
         }
     }
 

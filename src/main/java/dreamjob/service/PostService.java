@@ -29,7 +29,7 @@ public class PostService {
         List<Post> posts = postDbStore.findAll();
         posts.forEach(
                 p -> p.setCity(
-                cityStore.findById(p.getCity().getId())));
+                        cityStore.findById(p.getCity().getId())));
         return posts;
     }
 
@@ -43,5 +43,9 @@ public class PostService {
 
     public void update(Post post) {
         postDbStore.update(post);
+    }
+
+    public void delete(int id) {
+        postDbStore.delete(id);
     }
 }

@@ -84,4 +84,11 @@ public class CandidateControl {
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(new ByteArrayResource(candidate.getPhoto()));
     }
+
+    @GetMapping("/deleteCandidate/{candidateID}")
+    public String deleteCandidate(Model model, @PathVariable("candidateID") int id, HttpSession session) {
+        UserSession.getUserSession(model, session);
+        candidateService.delete(id);
+        return "redirect:/candidates";
+    }
 }

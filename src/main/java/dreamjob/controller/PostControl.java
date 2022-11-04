@@ -7,10 +7,7 @@ import dreamjob.utility.UserSession;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
@@ -69,6 +66,13 @@ public class PostControl {
         post.setCity(cityService.findById(post.getCity().getId()));
         post.setCreated(LocalDateTime.now());
         postService.update(post);
+        return "redirect:/posts";
+    }
+
+    @GetMapping("/deletePost/{postID}")
+    public String deletePost(Model model, @PathVariable("postID") int id, HttpSession session) {
+        UserSession.getUserSession(model, session);
+        postService.delete(id);
         return "redirect:/posts";
     }
 }

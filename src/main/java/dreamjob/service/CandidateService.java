@@ -41,4 +41,8 @@ public class CandidateService {
     public void updateWithoutPhoto(Candidate candidate) {
         store.updateWithoutPhoto(candidate);
     }
+
+    public void delete(int id) {
+        store.delete(id);
+    }
 }

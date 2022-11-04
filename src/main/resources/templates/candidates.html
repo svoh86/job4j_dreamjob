@@ -56,6 +56,7 @@
                 <th scope="col">Описание</th>
                 <th scope="col">Фотография</th>
                 <th scope="col">Дата создания</th>
+                <th scope="col">Удалить</th>
             </tr>
             </thead>
             <tbody>
@@ -72,6 +73,11 @@
                     <img th:width="150" th:high="150" th:src="@{|/photoCandidate/${candidate.id}|}">
                 </td>
                 <td th:text="${candidate.created}"/>
+                <td>
+                    <a th:href="@{|/deleteCandidate/${candidate.id}|}">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
             </tr>
             </tbody>
         </table>
