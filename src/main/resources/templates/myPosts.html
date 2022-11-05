@@ -83,7 +83,7 @@
                 </td>
                 <td th:text="${post.description}"/>
                 <td th:text="${post.city.name}"/>
-                <td th:text="${post.created}"/>
+                <td th:text="${#temporals.format(post.created, 'dd-MM-yyyy HH:mm')}"/>
                 <td>
                     <a th:href="@{|/deletePost/${post.id}|}">
                         <i class="fa fa-trash"></i>
@@ -121,7 +121,7 @@
                 <td>
                     <img th:width="150" th:high="150" th:src="@{|/photoCandidate/${candidate.id}|}">
                 </td>
-                <td th:text="${candidate.created}"/>
+                <td th:text="${#temporals.format(candidate.created, 'dd-MM-yyyy HH:mm')}"/>
                 <td>
                     <a th:href="@{|/deleteCandidate/${candidate.id}|}">
                         <i class="fa fa-trash"></i>
