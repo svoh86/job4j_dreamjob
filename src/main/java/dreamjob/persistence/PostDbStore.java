@@ -118,20 +118,21 @@ public class PostDbStore {
         }
     }
 
-    public Post findByUserId(int id) {
+    public List<Post> findByUserId(int id) {
+        List<Post> posts = new ArrayList<>();
         try (Connection connection = pool.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_ID)
         ) {
             statement.setInt(1, id);
             try (ResultSet it = statement.executeQuery()) {
-                if (it.next()) {
-                    return getPost(it);
+                while (it.next()) {
+                    posts.add(getPost(it));
                 }
             }
         } catch (Exception e) {
             LOG.error("Exception in method findByUserId()", e);
         }
-        return null;
+        return posts;
     }
 
     private Post getPost(ResultSet it) throws SQLException {
@@ -141,7 +142,7 @@ public class PostDbStore {
                 it.getString("description"),
                 it.getTimestamp("created").toLocalDateTime(),
                 it.getBoolean("visible"),
-                new City(it.getInt("city_id"), "Город")
+                new City(it.getInt("city_id"), "Город!!!")
         );
     }
 }

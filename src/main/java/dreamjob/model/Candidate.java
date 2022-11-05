@@ -15,6 +15,7 @@ public class Candidate {
     private String description;
     private LocalDateTime created;
     private byte[] photo;
+    private User user;
 
     public Candidate() {
     }
@@ -65,6 +66,14 @@ public class Candidate {
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

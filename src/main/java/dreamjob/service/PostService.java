@@ -49,7 +49,11 @@ public class PostService {
         postDbStore.delete(id);
     }
 
-    public Post findByUserId(int id) {
-        return postDbStore.findByUserId(id);
+    public List<Post> findByUserId(int id) {
+        List<Post> posts = postDbStore.findByUserId(id);
+        posts.forEach(
+                p -> p.setCity(
+                        cityStore.findById(p.getCity().getId())));
+        return posts;
     }
 }

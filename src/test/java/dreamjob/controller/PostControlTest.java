@@ -48,7 +48,7 @@ class PostControlTest {
         HttpSession session = mock(HttpSession.class);
         String page = postController.createPost(post, session);
         verify(postService).add(post);
-        assertThat(page).isEqualTo("redirect:/posts");
+        assertThat(page).isEqualTo("redirect:/myPosts");
     }
 
     @Test
@@ -94,6 +94,6 @@ class PostControlTest {
         PostControl postController = new PostControl(postService, cityService);
         String page = postController.updatePost(post);
         verify(postService).update(post);
-        assertThat(page).isEqualTo("redirect:/posts");
+        assertThat(page).isEqualTo("redirect:/myPosts");
     }
 }

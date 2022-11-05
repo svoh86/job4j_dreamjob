@@ -1,6 +1,7 @@
 package dreamjob.persistence;
 
 import dreamjob.model.Candidate;
+import dreamjob.model.Post;
 import net.jcip.annotations.ThreadSafe;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.LogManager;
@@ -26,14 +27,16 @@ public class CandidateDbStore {
     private final BasicDataSource pool;
     private final static Logger LOG = LogManager.getLogger(CandidateDbStore.class);
     private final static String FIND_ALL = "SELECT * FROM candidate";
-    private final static String ADD = "INSERT INTO candidate (name, description, created, photo)"
-                                      + " VALUES (?, ?, ?, ?)";
+    private final static String ADD = "INSERT INTO candidate (name, description, created, photo, user_id)"
+                                      + " VALUES (?, ?, ?, ?, ?)";
     private final static String FIND_BY_ID = "SELECT * FROM candidate WHERE id = ?";
     private final static String UPDATE = "UPDATE candidate SET name = ?, description = ?, "
                                          + "created = ?, photo = ? WHERE id = ?";
     private final static String UPDATE_WITHOUT_PHOTO = "UPDATE candidate SET name = ?, description = ?, "
-                                         + "created = ? WHERE id = ?";
+                                                       + "created = ? WHERE id = ?";
     private final static String DELETE = "DELETE FROM candidate WHERE id = ?";
+
+    private final static String FIND_BY_USER_ID = "SELECT * FROM candidate WHERE user_id = ?";
     private static final Comparator<Candidate> COMPARE_BY_ID = Comparator.comparingInt(Candidate::getId);
 
     public CandidateDbStore(BasicDataSource pool) {
@@ -66,6 +69,7 @@ public class CandidateDbStore {
             statement.setString(2, candidate.getDescription());
             statement.setTimestamp(3, Timestamp.valueOf(candidate.getCreated()));
             statement.setBytes(4, candidate.getPhoto());
+            statement.setInt(5, candidate.getUser().getId());
             statement.execute();
             try (ResultSet id = statement.getGeneratedKeys()) {
                 if (id.next()) {
@@ -132,6 +136,23 @@ public class CandidateDbStore {
         } catch (Exception e) {
             LOG.error("Exception in method delete()", e);
         }
+    }
+
+    public List<Candidate> findByUserId(int id) {
+        List<Candidate> candidates = new ArrayList<>();
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_ID)
+        ) {
+            statement.setInt(1, id);
+            try (ResultSet it = statement.executeQuery()) {
+                while (it.next()) {
+                    candidates.add(getCandidate(it));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception in method findByUserId()", e);
+        }
+        return candidates;
     }
 
     private Candidate getCandidate(ResultSet it) throws SQLException {

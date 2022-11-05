@@ -1,6 +1,7 @@
 package dreamjob.controller;
 
 import dreamjob.model.Candidate;
+import dreamjob.model.User;
 import dreamjob.service.CandidateService;
 import dreamjob.utility.UserSession;
 import net.jcip.annotations.ThreadSafe;
@@ -48,11 +49,13 @@ public class CandidateControl {
 
     @PostMapping("/createCandidate")
     public String createCandidate(@ModelAttribute Candidate candidate,
-                                  @RequestParam("file") MultipartFile file) throws IOException {
+                                  @RequestParam("file") MultipartFile file,
+                                  HttpSession session) throws IOException {
         candidate.setCreated(LocalDateTime.now());
         candidate.setPhoto(file.getBytes());
+        candidate.setUser((User) session.getAttribute("user"));
         candidateService.add(candidate);
-        return "redirect:/candidates";
+        return "redirect:/myPosts";
     }
 
     @GetMapping("/formUpdateCandidate/{candidateID}")
@@ -72,7 +75,7 @@ public class CandidateControl {
         } else {
             candidateService.updateWithoutPhoto(candidate);
         }
-        return "redirect:/candidates";
+        return "redirect:/myPosts";
     }
 
     @GetMapping("/photoCandidate/{candidateId}")
@@ -89,6 +92,6 @@ public class CandidateControl {
     public String deleteCandidate(Model model, @PathVariable("candidateID") int id, HttpSession session) {
         UserSession.getUserSession(model, session);
         candidateService.delete(id);
-        return "redirect:/candidates";
+        return "redirect:/myPosts";
     }
 }

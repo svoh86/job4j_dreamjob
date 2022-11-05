@@ -13,5 +13,6 @@ CREATE TABLE IF NOT EXISTS candidate (
     name text,
     description text,
     created timestamp,
-    photo bytea
+    photo bytea,
+    user_id integer
 );
