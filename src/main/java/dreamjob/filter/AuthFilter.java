@@ -30,6 +30,7 @@ public class AuthFilter implements Filter {
         if (uri.endsWith("loginPage") || uri.endsWith("login")
             || uri.endsWith("formAddUser") || uri.endsWith("createUser")
             || uri.endsWith("failRegistration") || uri.endsWith("successRegistration")
+            || uri.endsWith("index")
         ) {
             chain.doFilter(req, res);
             return;
